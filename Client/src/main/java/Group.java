@@ -1,25 +1,27 @@
-import java.util.ArrayList;
+import java.util.List;
 
 public class Group {
-    private int size;
-    private ArrayList<Person> recepters;
-    private Person sender;
+    private String name;
+    private List<String> recepters;
 
-    public Group(ArrayList<Person> recepters, Person sender) {
-        this.size = 1 + recepters.size();
+    public Group(String name, List<String> recepters) {
+        this.name = name;
         this.recepters = recepters;
-        this.sender = sender;
     }
 
-    public int getSize() {
-        return size;
+    public String getName() {
+        return name;
     }
 
-    public ArrayList<Person> getRecepters() {
+    public List<String> getRecepters() {
         return recepters;
     }
 
-    public Person getSender() {
-        return sender;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRecepters(List<String> recepters) {
+        this.recepters = recepters;
     }
 }

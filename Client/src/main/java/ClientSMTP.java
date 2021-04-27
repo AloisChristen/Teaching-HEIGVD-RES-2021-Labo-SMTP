@@ -1,3 +1,5 @@
+import org.json.simple.parser.ParseException;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -67,10 +69,23 @@ public class ClientSMTP {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s %n");
+        /*System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s %n");
 
         ClientSMTP clientSMTP = new ClientSMTP();
-        clientSMTP.sendOperation();
+        clientSMTP.sendOperation();*/
+
+        ConfigReader cr = new ConfigReader();
+
+        try {
+            System.out.println(cr.getMockPort());
+            cr.getAllContacts();
+            cr.getGroups();
+            cr.getJokes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 

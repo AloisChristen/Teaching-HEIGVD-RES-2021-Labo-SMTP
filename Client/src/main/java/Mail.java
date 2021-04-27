@@ -4,7 +4,7 @@ import java.util.Date;
 public class Mail {
 
     private String from;
-    private ArrayList<Person> to;
+    private ArrayList<Contact> to;
     private String subject;
     private Date date;
     private String text;
@@ -17,11 +17,11 @@ public class Mail {
         this.from = from;
     }
 
-    public ArrayList<Person> getTo() {
+    public ArrayList<Contact> getTo() {
         return to;
     }
 
-    public void setTo(ArrayList<Person> to) {
+    public void setTo(ArrayList<Contact> to) {
         this.to = to;
     }
 
