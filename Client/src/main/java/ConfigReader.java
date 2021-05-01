@@ -25,7 +25,7 @@ public class ConfigReader {
         this.configDirectory = configDirectory;
     }
 
-    public long getMockPort() throws IOException, ParseException {
+    public int getMockPort() throws IOException, ParseException {
         Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "mock_config.json");
         File mockConfigFile = pathToFile.toFile();
 
@@ -35,7 +35,7 @@ public class ConfigReader {
 
         //Read JSON file
         JSONObject obj = (JSONObject) parser.parse(br);
-        return (long) obj.get("port");
+        return (int) obj.get("port");
 
     }
 

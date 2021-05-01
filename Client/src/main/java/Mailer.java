@@ -1,3 +1,5 @@
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
@@ -13,6 +15,8 @@ public class Mailer {
     }
 
     public boolean sendMail(){
+        BufferedReader in = null;
+        PrintWriter out = null;
         step = 0;
         return false;
     }
