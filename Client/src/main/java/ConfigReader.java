@@ -35,7 +35,7 @@ public class ConfigReader {
 
         //Read JSON file
         JSONObject obj = (JSONObject) parser.parse(br);
-        return (int) obj.get("port");
+        return ((Long) obj.get("port")).intValue();
 
     }
 

@@ -3,7 +3,9 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,6 +47,14 @@ public class ClientSMTP {
             clientSocket = new Socket(serverSMTPaddress, config.getMockPort());
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
             out = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8));
+            String line = in.readLine();
+            if(line.startsWith("220 ")){
+
+            } else {
+                currentStep = STEP.END;
+                LOG.log(Level.SEVERE, "Something went terribly wrong");
+                throw new IOException("Server is drunk again");
+            }
     }
 
     private void sendEHLO() throws IOException {
@@ -52,7 +62,7 @@ public class ClientSMTP {
         out.flush();
         String line;
         Boolean moreOptions = true;
-        while((line = in.readLine()) != null && moreOptions){
+        while(moreOptions && (line = in.readLine()) != null ){
             if(line.startsWith("250 ")){
                 moreOptions = false;
             } else if (line.startsWith("250-")){
@@ -66,10 +76,10 @@ public class ClientSMTP {
     }
 
     private void sendMailFromInfo() throws IOException {
-        out.print("MAIL FROM:<" + mail.getFrom() + ">" + endLine);
+        out.print("MAIL FROM: " + mail.getFrom() + endLine);
         out.flush();
         String line = in.readLine();
-        if(line.equals("250 OK")){
+        if(line.startsWith("250 ")){
 
         } else if (line.startsWith("550 ")){
             LOG.log(Level.WARNING, "Mail has invalid from email address (" + mail.getFrom() + ")");
@@ -82,10 +92,10 @@ public class ClientSMTP {
 
     private void sendRCPT_TOInfo() throws IOException {
         for(Contact contact : mail.getTo()){
-            out.print("RCPT TO:<" + contact.getEmail() + ">" + endLine);
+            out.print("RCPT TO: " + contact.getEmail() + endLine);
             out.flush();
             String line = in.readLine();
-            if(line.equals("250 OK")) {
+            if(line.startsWith("250 ")){
 
             } else if (line.startsWith("550 ")){
                 LOG.log(Level.WARNING, "Contact " + contact.getFirstName() + " " + contact.getLastname() +
@@ -101,7 +111,7 @@ public class ClientSMTP {
     }
 
     private void sendData() throws IOException {
-        out.print("DATA");
+        out.print("DATA" + endLine);
         out.flush();
         String line = in.readLine();
         if(!line.startsWith("354 ")){
@@ -109,7 +119,12 @@ public class ClientSMTP {
             LOG.log(Level.SEVERE, "Something went terribly wrong");
             throw new IOException("Server is drunk again");
         } else {
-            out.print(mail.getText());
+            out.print("Content-Type: text/plain; charset=utf-8" + endLine);
+            out.print("From: " +mail.getFrom() + endLine);
+            out.print("To: " +mail.getTo().get(0).getEmail() + endLine);
+            out.print("Subject:  =?utf-8?B?" + Base64.getEncoder().encodeToString(mail.getSubject().getBytes(StandardCharsets.UTF_8))  + "?= " + endLine);
+            out.print("Date: " + mail.getDate() + endLine);
+            out.print(endLine + mail.getText());
             out.print(endLine + "." + endLine);
             out.flush();
             line = in.readLine();
@@ -124,7 +139,7 @@ public class ClientSMTP {
     }
 
     private void quit() throws IOException {
-        out.print("QUIT");
+        out.print("QUIT" + endLine);
         out.flush();
         String line = in.readLine();
         if(line.startsWith("221 ")){
@@ -144,7 +159,7 @@ public class ClientSMTP {
         currentStep = STEP.CONNECTION;
         config = new ConfigReader();
         try {
-        for(; currentStep != STEP.END; currentStep.next()){
+        for(; currentStep != STEP.END; currentStep = currentStep.next()){
             switch(currentStep) {
                 case CONNECTION:
                     connect();
@@ -196,14 +211,18 @@ public class ClientSMTP {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s %n");
 
         ClientSMTP clientSMTP = new ClientSMTP();
         Mail mail = new Mail();
+        ConfigReader cr = new ConfigReader();
+        Group group = cr.getGroups().get(0);
         mail.setFrom("alois.christen@abcd.ch");
         mail.setTo(Collections.singletonList(new Contact("delphine.scherler@gmail.com", "Scherler", "Delphine")));
         mail.setText("Premier mail de l'humanité");
+        mail.setSubject("Les patâtes");
+        mail.setDate(new Date());
         clientSMTP.sendMail(mail);
 
     }
