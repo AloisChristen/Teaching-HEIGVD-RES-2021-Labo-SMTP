@@ -1,27 +1,18 @@
 import java.util.List;
 
 public class Group {
-    private String name;
-    private List<String> recepters;
+    private List<String> emails;
 
-    public Group(String name, List<String> recepters) {
-        this.name = name;
-        this.recepters = recepters;
+    public Group(List<String> recepters) {
+        this.emails = recepters;
     }
 
-    public String getName() {
-        return name;
+
+    public List<String> getEmails() {
+        return emails;
     }
 
-    public List<String> getRecepters() {
-        return recepters;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setRecepters(List<String> recepters) {
-        this.recepters = recepters;
+    public void setEmails(List<String> emails) {
+        this.emails = emails;
     }
 }

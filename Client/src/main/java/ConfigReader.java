@@ -26,7 +26,7 @@ public class ConfigReader {
     }
 
     public int getMockPort() throws IOException, ParseException {
-        Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "mock_config.json");
+        Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "general_config.json");
         File mockConfigFile = pathToFile.toFile();
 
         //Json parser to parse read file
@@ -39,46 +39,47 @@ public class ConfigReader {
 
     }
 
-    public List<Contact> getAllContacts() throws IOException {
+    public List<String> getAllEmails() throws IOException, ParseException {
         Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "email_contacts.json");
         File contactsFile = pathToFile.toFile();
 
+        JSONParser parser = new JSONParser();
         BufferedReader br = new BufferedReader(new FileReader(contactsFile));
 
         //Read JSON file and create Contact
-        Gson gson = new Gson();
-        Type contactListType = new TypeToken<ArrayList<Contact>>(){}.getType();
-        ArrayList<Contact> contacts = gson.fromJson(br.lines().collect(Collectors.joining("\n")), contactListType);
+        JSONObject obj = (JSONObject) parser.parse(br);
+        Type stringListType = new TypeToken<ArrayList<String>>(){}.getType();
+        ArrayList<String> emails = (ArrayList<String>) obj.get("emails");
 
-        return contacts;
+        return emails;
     }
 
-    public List<Group> getGroups() throws IOException {
-        Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "email_address_group.json");
+    public int getNBGroups() throws IOException, ParseException {
+        Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "general_config.json");
         File groupsFile = pathToFile.toFile();
 
         BufferedReader br = new BufferedReader(new FileReader(groupsFile));
 
         //Read JSON file and create Group
-        Gson gson = new Gson();
-        Type GroupListType = new TypeToken<ArrayList<Group>>(){}.getType();
-        ArrayList<Group> groups = gson.fromJson(br.lines().collect(Collectors.joining("\n")), GroupListType);
+        JSONParser parser = new JSONParser();
 
-        return groups;
+        //Read JSON file
+        JSONObject obj = (JSONObject) parser.parse(br);
+        return ((Long) obj.get("number_of_groups")).intValue();
     }
 
-    public List<Joke> getJokes() throws IOException {
-        Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "jokes.json");
-        File jokesFile = pathToFile.toFile();
+    public List<Prank> getPranks() throws IOException {
+        Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "pranks.json");
+        File pranksFile = pathToFile.toFile();
 
-        BufferedReader br = new BufferedReader(new FileReader(jokesFile));
+        BufferedReader br = new BufferedReader(new FileReader(pranksFile));
 
         //Read JSON file and create Joke
         Gson gson = new Gson();
-        Type JokeType = new TypeToken<ArrayList<Joke>>(){}.getType();
-        ArrayList<Joke> joke = gson.fromJson(br.lines().collect(Collectors.joining("\n")), JokeType);
+        Type prankListType = new TypeToken<ArrayList<Prank>>(){}.getType();
+        ArrayList<Prank> prank = gson.fromJson(br.lines().collect(Collectors.joining("\n")), prankListType);
 
-        return joke;
+        return prank;
     }
 
 

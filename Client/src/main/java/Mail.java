@@ -5,7 +5,7 @@ import java.util.List;
 public class Mail {
 
     private String from;
-    private List<Contact> to;
+    private List<String> to;
     private String subject;
     private Date date;
     private String text;
@@ -18,11 +18,11 @@ public class Mail {
         this.from = from;
     }
 
-    public List<Contact> getTo() {
+    public List<String> getTo() {
         return to;
     }
 
-    public void setTo(List<Contact> to) {
+    public void setTo(List<String> to) {
         this.to = to;
     }
 

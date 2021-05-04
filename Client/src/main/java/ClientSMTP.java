@@ -3,10 +3,7 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -91,15 +88,14 @@ public class ClientSMTP {
     }
 
     private void sendRCPT_TOInfo() throws IOException {
-        for(Contact contact : mail.getTo()){
-            out.print("RCPT TO: " + contact.getEmail() + endLine);
+        for(String contact : mail.getTo()){
+            out.print("RCPT TO: " + contact + endLine);
             out.flush();
             String line = in.readLine();
             if(line.startsWith("250 ")){
 
             } else if (line.startsWith("550 ")){
-                LOG.log(Level.WARNING, "Contact " + contact.getFirstName() + " " + contact.getLastname() +
-                        "has invalid email address (" + contact.getEmail() + ")");
+                LOG.log(Level.WARNING, "Contact " + contact + " is invalid");
             } else {
                 currentStep = STEP.END;
                 LOG.log(Level.SEVERE, "Something went terribly wrong");
@@ -120,8 +116,8 @@ public class ClientSMTP {
             throw new IOException("Server is drunk again");
         } else {
             out.print("Content-Type: text/plain; charset=utf-8" + endLine);
-            out.print("From: " +mail.getFrom() + endLine);
-            out.print("To: " +mail.getTo().get(0).getEmail() + endLine);
+            out.print("From: " + mail.getFrom() + endLine);
+            out.print("To: " + mail.getTo().get(0) + endLine);
             out.print("Subject:  =?utf-8?B?" + Base64.getEncoder().encodeToString(mail.getSubject().getBytes(StandardCharsets.UTF_8))  + "?= " + endLine);
             out.print("Date: " + mail.getDate() + endLine);
             out.print(endLine + mail.getText());
@@ -211,18 +207,15 @@ public class ClientSMTP {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ParseException {
         System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s %n");
 
         ClientSMTP clientSMTP = new ClientSMTP();
-        Mail mail = new Mail();
         ConfigReader cr = new ConfigReader();
-        Group group = cr.getGroups().get(0);
-        mail.setFrom("alois.christen@abcd.ch");
-        mail.setTo(Collections.singletonList(new Contact("delphine.scherler@gmail.com", "Scherler", "Delphine")));
-        mail.setText("Premier mail de l'humanité");
-        mail.setSubject("Les patâtes");
-        mail.setDate(new Date());
+        GroupFactory gf = new GroupFactory();
+        gf.setEmails(cr.getAllEmails());
+        List<Group> groups = gf.generateGroups(cr.getNBGroups());
+        Mail mail = GroupMailer.generateMail(groups.get(0), cr.getPranks().get(0));
         clientSMTP.sendMail(mail);
 
     }
