@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Mail {
 
     private String from;
-    private ArrayList<Contact> to;
+    private List<Contact> to;
     private String subject;
     private Date date;
     private String text;
@@ -17,11 +18,11 @@ public class Mail {
         this.from = from;
     }
 
-    public ArrayList<Contact> getTo() {
+    public List<Contact> getTo() {
         return to;
     }
 
-    public void setTo(ArrayList<Contact> to) {
+    public void setTo(List<Contact> to) {
         this.to = to;
     }
 
