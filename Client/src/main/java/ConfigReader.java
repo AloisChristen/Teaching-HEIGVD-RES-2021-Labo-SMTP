@@ -1,4 +1,5 @@
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,32 +16,44 @@ import java.util.stream.Collectors;
 public class ConfigReader {
 
     private static String DEFAULT_CONFIG_DIRECTORY = "./ressources/config";
-    private String configDirectory;
 
     public ConfigReader() {
-        this(DEFAULT_CONFIG_DIRECTORY);
     }
 
-    public ConfigReader(String configDirectory) {
-        this.configDirectory = configDirectory;
-    }
-
-    public int getMockPort() throws IOException, ParseException {
+    public int getMockPort() {
         Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "general_config.json");
         File mockConfigFile = pathToFile.toFile();
 
         //Json parser to parse read file
         JSONParser parser = new JSONParser();
-        BufferedReader br = new BufferedReader(new FileReader(mockConfigFile));
+
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(mockConfigFile));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         //Read JSON file
-        JSONObject obj = (JSONObject) parser.parse(br);
-        return ((Long) obj.get("port")).intValue();
+        JSONObject obj = null;
+        try {
+            obj = (JSONObject) parser.parse(br);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Long port = (Long) obj.get("port");
+        if (port == null) {
+            throw new RuntimeException("port attribute doesn't exist in general_config.json");
+        }
+        return port.intValue();
 
     }
 
     public List<String> getAllEmails() throws IOException, ParseException {
-        Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "email_contacts.json");
+        Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "emails.json");
         File contactsFile = pathToFile.toFile();
 
         JSONParser parser = new JSONParser();
@@ -48,8 +61,10 @@ public class ConfigReader {
 
         //Read JSON file and create Contact
         JSONObject obj = (JSONObject) parser.parse(br);
-        Type stringListType = new TypeToken<ArrayList<String>>(){}.getType();
         ArrayList<String> emails = (ArrayList<String>) obj.get("emails");
+        if (emails == null) {
+            throw new RuntimeException("emails attribute doesn't exist in emails.json");
+        }
 
         return emails;
     }
@@ -65,7 +80,13 @@ public class ConfigReader {
 
         //Read JSON file
         JSONObject obj = (JSONObject) parser.parse(br);
-        return ((Long) obj.get("number_of_groups")).intValue();
+
+        Long nbGroups = (Long) obj.get("number_of_groups");
+        if (nbGroups == null) {
+            throw new RuntimeException("number_of_groups attribute doesn't exist in general_config.json");
+        }
+        return nbGroups.intValue();
+
     }
 
     public List<Prank> getPranks() throws IOException {
@@ -76,11 +97,11 @@ public class ConfigReader {
 
         //Read JSON file and create Joke
         Gson gson = new Gson();
-        Type prankListType = new TypeToken<ArrayList<Prank>>(){}.getType();
+        Type prankListType = new TypeToken<ArrayList<Prank>>() {}.getType();
+
         ArrayList<Prank> prank = gson.fromJson(br.lines().collect(Collectors.joining("\n")), prankListType);
-
         return prank;
-    }
 
+    }
 
 }
