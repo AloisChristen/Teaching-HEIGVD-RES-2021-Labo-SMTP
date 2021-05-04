@@ -3,6 +3,7 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -215,8 +216,15 @@ public class ClientSMTP {
         GroupFactory gf = new GroupFactory();
         gf.setEmails(cr.getAllEmails());
         List<Group> groups = gf.generateGroups(cr.getNBGroups());
-        Mail mail = GroupMailer.generateMail(groups.get(0), cr.getPranks().get(0));
-        clientSMTP.sendMail(mail);
+        Random rand = new Random(Instant.now().toEpochMilli());
+
+        for(Group group : groups){
+            int numPrank = rand.nextInt(cr.getPranks().size());
+            List<Mail> mails = GroupMailer.generateMail(group, cr.getPranks().get(numPrank));
+            for(Mail mail : mails){
+                clientSMTP.sendMail(mail);
+            }
+        }
 
     }
 
