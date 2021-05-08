@@ -1,8 +1,14 @@
 package ch.heigvd.res;
 
+/**
+ * Represents a prank, with a subjet and message
+ * @authors Aloïs Christen & Delphine Scherler
+ * @date 2021/05/08
+ */
 public class Prank {
-    private String message;
     private String subject;
+    private String message;
+
 
     public Prank(String subject, String message) {
         this.message = message;

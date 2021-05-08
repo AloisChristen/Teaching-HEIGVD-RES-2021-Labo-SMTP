@@ -3,51 +3,19 @@ package ch.heigvd.res;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Reprensent a mail that can be send
+ * Each part of the mail is an attribute
+ * @authors Aloïs Christen & Delphine Scherler
+ * @date 2021/05/08
+ */
 public class Mail {
+    public String mail_from;
+    public List<String> rcpt_to;
+    public String data_from;
+    public List<String> data_to;
+    public String subject;
+    public Date date;
+    public String text;
 
-    private String from;
-    private List<String> to;
-    private String subject;
-    private Date date;
-    private String text;
-
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public List<String> getTo() {
-        return to;
-    }
-
-    public void setTo(List<String> to) {
-        this.to = to;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 }
