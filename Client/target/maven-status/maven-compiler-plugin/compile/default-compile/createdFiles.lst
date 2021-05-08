@@ -1,0 +1,11 @@
+ch\heigvd\res\Group.class
+ch\heigvd\res\ClientSMTP.class
+ch\heigvd\res\ClientSMTP$1.class
+ch\heigvd\res\ClientSMTP$RESPONSE.class
+ch\heigvd\res\ClientSMTP$STEP.class
+ch\heigvd\res\Mail.class
+ch\heigvd\res\GroupFactory.class
+ch\heigvd\res\Prank.class
+ch\heigvd\res\ConfigReader.class
+ch\heigvd\res\GroupMailer.class
+ch\heigvd\res\ConfigReader$1.class
