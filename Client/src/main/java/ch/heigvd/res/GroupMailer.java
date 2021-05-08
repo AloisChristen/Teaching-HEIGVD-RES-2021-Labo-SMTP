@@ -1,14 +1,11 @@
+package ch.heigvd.res;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class GroupMailer {
-
-//    public GroupMailer(Group group, String joke) {
-//        this.email = email;
-//        this.smtpServer = smtpServer;
-//    }
 
     public static List<Mail> generateMail(Group group, Prank prank){
         List<Mail> mails = new ArrayList<>();

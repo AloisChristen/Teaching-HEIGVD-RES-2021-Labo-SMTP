@@ -1,3 +1,5 @@
+package ch.heigvd.res;
+
 import java.util.List;
 
 public class Group {

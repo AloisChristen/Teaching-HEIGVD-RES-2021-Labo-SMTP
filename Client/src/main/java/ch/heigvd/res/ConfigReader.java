@@ -1,5 +1,6 @@
+package ch.heigvd.res;
+
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,6 +19,9 @@ public class ConfigReader {
     private static String DEFAULT_CONFIG_DIRECTORY = "./ressources/config";
 
     public ConfigReader() {
+        // Contruire avec le chemin
+        // Mettre des attributs privé, et faire une méthode qui va tout lire
+        // Renvoyer les attributs quand demandés
     }
 
     public int getMockPort() {
@@ -75,7 +79,7 @@ public class ConfigReader {
 
         BufferedReader br = new BufferedReader(new FileReader(groupsFile));
 
-        //Read JSON file and create Group
+        //Read JSON file and create ch.heigvd.res.Group
         JSONParser parser = new JSONParser();
 
         //Read JSON file

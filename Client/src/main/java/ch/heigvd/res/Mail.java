@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package ch.heigvd.res;
+
 import java.util.Date;
 import java.util.List;
 

@@ -1,3 +1,5 @@
+package ch.heigvd.res;
+
 public class Prank {
     private String message;
     private String subject;

@@ -1,3 +1,5 @@
+package ch.heigvd.res;
+
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
@@ -17,14 +19,12 @@ public class ClientSMTP {
 
     static final Logger LOG = Logger.getLogger(ClientSMTP.class.getName());
 
-    final static int BUFFER_SIZE = 1024;
-
     private Socket clientSocket = null;
     private BufferedReader in = null;
     private PrintWriter out = null;
     private STEP currentStep;
     private ConfigReader config;
-    private static final String serverSMTPaddress = "localhost";
+    private static final String serverSMTPaddress = "127.0.0.1";
     private static final String endLine = "\r\n";
     private Mail mail;
 
@@ -80,7 +80,7 @@ public class ClientSMTP {
         if(line.startsWith("250 ")){
 
         } else if (line.startsWith("550 ")){
-            LOG.log(Level.WARNING, "Mail has invalid from email address (" + mail.getFrom() + ")");
+            LOG.log(Level.WARNING, "ch.heigvd.res.Mail has invalid from email address (" + mail.getFrom() + ")");
         } else {
             currentStep = STEP.END;
             LOG.log(Level.SEVERE, "Something went terribly wrong");
@@ -118,10 +118,10 @@ public class ClientSMTP {
         } else {
             out.print("Content-Type: text/plain; charset=utf-8" + endLine);
             out.print("From: " + mail.getFrom() + endLine);
-            out.print("To: " + mail.getTo().get(0) + endLine);
+            out.print("To: " + mail.getTo().get(0) + endLine); // Envoyer à tous les destinataire
             out.print("Subject:  =?utf-8?B?" + Base64.getEncoder().encodeToString(mail.getSubject().getBytes(StandardCharsets.UTF_8))  + "?= " + endLine);
             out.print("Date: " + mail.getDate() + endLine);
-            out.print(endLine + mail.getText());
+            out.print(endLine + mail.getText()); // Double endline ?
             out.print(endLine + "." + endLine);
             out.flush();
             line = in.readLine();
@@ -212,15 +212,15 @@ public class ClientSMTP {
         System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s %n");
 
         ClientSMTP clientSMTP = new ClientSMTP();
-        ConfigReader cr = new ConfigReader();
-        GroupFactory gf = new GroupFactory();
-        gf.setEmails(cr.getAllEmails());
-        List<Group> groups = gf.generateGroups(cr.getNBGroups());
+        ConfigReader configReaderr = new ConfigReader();
+        GroupFactory groupFactory = new GroupFactory();
+        groupFactory.setEmails(configReaderr.getAllEmails());
+        List<Group> groups = groupFactory.generateGroups(configReaderr.getNBGroups());
         Random rand = new Random(Instant.now().toEpochMilli());
 
         for(Group group : groups){
-            int numPrank = rand.nextInt(cr.getPranks().size());
-            List<Mail> mails = GroupMailer.generateMail(group, cr.getPranks().get(numPrank));
+            int numPrank = rand.nextInt(configReaderr.getPranks().size());
+            List<Mail> mails = GroupMailer.generateMail(group, configReaderr.getPranks().get(numPrank));
             for(Mail mail : mails){
                 clientSMTP.sendMail(mail);
             }
