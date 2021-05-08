@@ -22,7 +22,7 @@ De plus, la présence de 3 emails minimum (taille des groupes minimum) et d'au m
 
 ## Utilisation & tests
 
-Une fois les fichiers de configuration prêts, vous pouvez simplement exécuter la commande suivante  `java -jar prank-sender-1.0-SNAPSHOT-standalone.jar` depuis le dossier "Client/target". L'envoi des blagues sera alors fait automatiquement.
+Une fois les fichiers de configuration prêts, vous pouvez simplement exécuter la commande suivante  `java -jar target/prank-sender-1.0-SNAPSHOT-standalone.jar` depuis le dossier "Client". L'envoi des blagues sera alors fait automatiquement.
 
 Si vous souhaiter faire des tests avant d'envoyer de réelles blagues, nous avons inclus un serveur MockMock de test que vous pouvez utiliser. Il se trouve dans le dossier "Docker_Mock". Il s'agit d'un serveur tournant sur [Docker](https://www.docker.com/). Pour le lancer, vous aurez besoin d'une installation docker.
 
@@ -34,7 +34,7 @@ Allez dans le dossier "Docker_Mock" et lancer les deux commandes suivantes : `./
 
 Configurer l'application pour utiliser l'adresse ip 127.0.0.1 et le port 8281
 
-Lancer l'application (`java -jar prank-sender-1.0-SNAPSHOT-standalone.jar`). Les emails seront envoyés au serveur MockMock
+Lancer l'application (`java -jar target/prank-sender-1.0-SNAPSHOT-standalone.jar`) depuis le dossier "Client". Les emails seront envoyés au serveur MockMock
 
 Connecter vous avec votre navigateur à l'adresse `http://localhost:8282/`. La liste des emails reçu par MockMock y est consultable.
 
