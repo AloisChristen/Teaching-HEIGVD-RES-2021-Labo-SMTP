@@ -40,7 +40,7 @@ Connecter vous avec votre navigateur à l'adresse `http://localhost:8282/`. La l
 
 ## Implémentation
 
-![UML-implementation](figures\UML.png)
+![UML-implementation](figures/UML.png)
 
 L'application est constituée des classes suivantes :
 
@@ -55,7 +55,7 @@ L'application est constituée des classes suivantes :
 
 ## Exemple d'un dialogue Client-Serveur
 
-![exchange-example](figures\mail_exchange.png)
+![exchange-example](figures/mail_exchange.png)
 
 En bleu les réponses du serveur, et en rouges celle du client.
 
