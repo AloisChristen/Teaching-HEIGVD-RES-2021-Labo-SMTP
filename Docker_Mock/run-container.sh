@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker run -p 25:25 -p 8282:8282 christen-scherler/docker-smtp
+docker run -p 8281:8281 -p 8282:8282 christen-scherler/docker-smtp

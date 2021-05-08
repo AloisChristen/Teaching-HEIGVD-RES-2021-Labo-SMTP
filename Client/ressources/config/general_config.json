@@ -1,5 +1,5 @@
 {
   "ip_address": "127.0.0.1",
-  "port": 25,
+  "port": 8281,
   "number_of_groups": 4
 }

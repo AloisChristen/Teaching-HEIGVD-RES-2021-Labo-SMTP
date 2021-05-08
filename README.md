@@ -32,7 +32,7 @@ Lancer docker
 
 Allez dans le dossier "Docker_Mock" et lancer les deux commandes suivantes : `./build-image.sh` suivi de  `./run-container.sh`.
 
-Configurer l'application pour utiliser l'adresse ip 127.0.0.1 et le port 25
+Configurer l'application pour utiliser l'adresse ip 127.0.0.1 et le port 8281
 
 Lancer l'application (`java -jar prank-sender-1.0-SNAPSHOT-standalone.jar`). Les emails seront envoyés au serveur MockMock
 
@@ -40,7 +40,7 @@ Connecter vous avec votre navigateur à l'adresse `http://localhost:8282/`. La l
 
 ## Implémentation
 
-![](C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\UML.png)
+![](.\figures\UML.png)
 
 L'application est constituée des classes suivantes :
 
@@ -55,7 +55,7 @@ L'application est constituée des classes suivantes :
 
 ## Exemple d'un dialogue Client-Serveur
 
-![image-20210508152313639](C:\Users\Alois\AppData\Roaming\Typora\typora-user-images\image-20210508152313639.png)
+![image-20210508152313639](.\figures\mail_exchange.png)
 
 En bleu les réponses du serveur, et en rouges celle du client.
 
