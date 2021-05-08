@@ -13,7 +13,7 @@ Il est très simple d'utilisation et ne demande pas de connaissances particuliè
 Toute la configuration se trouve dans le dossier config (client/resources/config). Elle est composée de 3 fichiers au format [JSON](https://en.wikipedia.org/wiki/JSON) : 
 
 - emails.json : Contient la liste des emails des victimes [emails], ainsi que le nombre de groupe de victimes à former [number_of_groups].
-- server.json : Configuration concernant le server SMTP à qui les blagues seront envoyées. Contient adresse du server [address] et le port de connexion [port].
+- server_config.json : Configuration concernant le server SMTP à qui les blagues seront envoyées. Contient adresse du server [address] et le port de connexion [port].
 - pranks.json : Contient une liste de blagues qui vont être envoyées. Chaque blague est constituée  d'un sujet et d'un message.
 
 Vous pouvez modifier les données de configuration, mais la structure doit restée la même, sinon le programme ne fonctionnera pas.
