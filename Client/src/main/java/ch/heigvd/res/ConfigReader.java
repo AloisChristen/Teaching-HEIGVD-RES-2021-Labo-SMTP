@@ -17,15 +17,20 @@ import java.util.stream.Collectors;
 public class ConfigReader {
 
     private static String DEFAULT_CONFIG_DIRECTORY = "./ressources/config";
+    private static String EMAILS_FILE = "emails.json";
+    private static String PRANKS_FILE = "pranks.json";
+    private static String SERVER_CONFIG_FILE = "server_config.json";
+    private String ipAddress;
+    private int serverPort;
+    private List<String> emails;
+    private int nbGroups;
+    private List<Prank> pranks;
 
     public ConfigReader() {
-        // Contruire avec le chemin
-        // Mettre des attributs privé, et faire une méthode qui va tout lire
-        // Renvoyer les attributs quand demandés
     }
 
-    public int getMockPort() {
-        Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "general_config.json");
+    public JSONObject getJsonObjet(String fileName) throws IOException, ParseException {
+        Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, fileName);
         File mockConfigFile = pathToFile.toFile();
 
         //Json parser to parse read file
@@ -38,25 +43,42 @@ public class ConfigReader {
             e.printStackTrace();
         }
 
-        //Read JSON file
-        JSONObject obj = null;
-        try {
-            obj = (JSONObject) parser.parse(br);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        Long port = (Long) obj.get("port");
-        if (port == null) {
-            throw new RuntimeException("port attribute doesn't exist in general_config.json");
-        }
-        return port.intValue();
-
+        return (JSONObject) parser.parse(br);
     }
 
-    public List<String> getAllEmails() throws IOException, ParseException {
+    public void readConfig() throws IOException, ParseException {
+        Long longTmp;
+        JSONObject obj;
+
+        //Read server config file
+        obj = getJsonObjet(SERVER_CONFIG_FILE);
+        longTmp = (Long) obj.get("port");
+        if (longTmp == null) {
+            throw new RuntimeException("port attribute doesn't exist in server_config.json");
+        }
+        this.serverPort = longTmp.intValue();
+        this.ipAddress = (String) obj.get("ip_address");
+
+        //Read emails config file
+        obj = getJsonObjet(EMAILS_FILE);
+        longTmp = (Long) obj.get("number_of_groups");
+        if (longTmp == null) {
+            throw new RuntimeException("number_of_groups attribute doesn't exist in emails.json");
+        }
+        this.nbGroups = longTmp.intValue();
+        this.emails = (ArrayList<String>) obj.get("emails");
+
+        //Read pranks config file
+        try {
+            pranks = parsePranks();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+   /* public List<String> getAllEmails() throws IOException, ParseException {
         Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "emails.json");
         File contactsFile = pathToFile.toFile();
 
@@ -74,12 +96,11 @@ public class ConfigReader {
     }
 
     public int getNBGroups() throws IOException, ParseException {
-        Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "general_config.json");
+        Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "emails.json");
         File groupsFile = pathToFile.toFile();
 
         BufferedReader br = new BufferedReader(new FileReader(groupsFile));
 
-        //Read JSON file and create ch.heigvd.res.Group
         JSONParser parser = new JSONParser();
 
         //Read JSON file
@@ -87,14 +108,14 @@ public class ConfigReader {
 
         Long nbGroups = (Long) obj.get("number_of_groups");
         if (nbGroups == null) {
-            throw new RuntimeException("number_of_groups attribute doesn't exist in general_config.json");
+            throw new RuntimeException("number_of_groups attribute doesn't exist in server_config.json");
         }
         return nbGroups.intValue();
 
     }
-
-    public List<Prank> getPranks() throws IOException {
-        Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, "pranks.json");
+*/
+    public List<Prank> parsePranks() throws IOException {
+        Path pathToFile = Paths.get(DEFAULT_CONFIG_DIRECTORY, PRANKS_FILE);
         File pranksFile = pathToFile.toFile();
 
         BufferedReader br = new BufferedReader(new FileReader(pranksFile));
@@ -108,4 +129,23 @@ public class ConfigReader {
 
     }
 
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public int getServerPort() {
+        return serverPort;
+    }
+
+    public List<String> getEmails() {
+        return emails;
+    }
+
+    public int getNbGroups() {
+        return nbGroups;
+    }
+
+    public List<Prank> getPranks() {
+        return pranks;
+    }
 }

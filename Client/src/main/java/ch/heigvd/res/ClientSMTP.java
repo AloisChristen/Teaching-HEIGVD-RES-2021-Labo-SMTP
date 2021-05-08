@@ -23,8 +23,8 @@ public class ClientSMTP {
     private BufferedReader in = null;
     private PrintWriter out = null;
     private STEP currentStep;
-    private ConfigReader config;
-    private static final String serverSMTPaddress = "127.0.0.1";
+    private String serverSMTPaddress;
+    private int port;
     private static final String endLine = "\r\n";
     private Mail mail;
 
@@ -37,12 +37,13 @@ public class ClientSMTP {
         }
     }
 
-    private enum RESPONSE {
-        _250, _220, _550, _354, _221
+    public ClientSMTP(String serverSMTPaddress, int port) {
+        this.serverSMTPaddress = serverSMTPaddress;
+        this.port = port;
     }
 
     private void connect() throws IOException, ParseException {
-            clientSocket = new Socket(serverSMTPaddress, config.getMockPort());
+            clientSocket = new Socket(serverSMTPaddress, port);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
             out = new PrintWriter(new OutputStreamWriter(clientSocket.getOutputStream(), StandardCharsets.UTF_8));
             String line = in.readLine();
@@ -154,7 +155,6 @@ public class ClientSMTP {
     public void sendMail(Mail mail) {
         this.mail = mail;
         currentStep = STEP.CONNECTION;
-        config = new ConfigReader();
         try {
         for(; currentStep != STEP.END; currentStep = currentStep.next()){
             switch(currentStep) {
@@ -205,27 +205,5 @@ public class ClientSMTP {
         }
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws IOException, ParseException {
-        System.setProperty("java.util.logging.SimpleFormatter.format", "%5$s %n");
-
-        ClientSMTP clientSMTP = new ClientSMTP();
-        ConfigReader configReaderr = new ConfigReader();
-        GroupFactory groupFactory = new GroupFactory();
-        groupFactory.setEmails(configReaderr.getAllEmails());
-        List<Group> groups = groupFactory.generateGroups(configReaderr.getNBGroups());
-        Random rand = new Random(Instant.now().toEpochMilli());
-
-        for(Group group : groups){
-            int numPrank = rand.nextInt(configReaderr.getPranks().size());
-            List<Mail> mails = GroupMailer.generateMail(group, configReaderr.getPranks().get(numPrank));
-            for(Mail mail : mails){
-                clientSMTP.sendMail(mail);
-            }
-        }
-
-    }
 
 }

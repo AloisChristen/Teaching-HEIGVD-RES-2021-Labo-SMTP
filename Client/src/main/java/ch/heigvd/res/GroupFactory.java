@@ -12,16 +12,9 @@ public class GroupFactory {
     private Random rand;
     private List<String> emails;
 
-    public GroupFactory(){
-    rand = new Random(Instant.now().toEpochMilli());
-    }
-
-    public List<String> getEmails() {
-        return emails;
-    }
-
-    public void setEmails(List<String> emails) {
+    public GroupFactory(List<String> emails){
         this.emails = emails;
+        rand = new Random(Instant.now().toEpochMilli());
     }
 
     public List<Group> generateGroups(int nbOfGroups){
