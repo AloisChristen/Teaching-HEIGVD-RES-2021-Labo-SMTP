@@ -1,61 +1,61 @@
 # Teaching-HEIGVD-RES-2021-Labo-SMTP
 
-## Objectives
-
-In this lab, you will develop a client application (TCP) in Java. This client application will use the Socket API to communicate with an SMTP server. The code that you write will include a **partial implementation of the SMTP protocol**. These are the objectives of the lab:
-
-* Make practical experiments to become familiar with the **SMTP protocol**. After the lab, you should be able to use a command line tool to **communicate with an SMTP server**. You should be able to send well-formed messages to the server, in order to send emails to the address of your choice.
-
-* Understand the notions of **test double** and **mock server**, which are useful when developing and testing a client-server application. During the lab, you will setup and use such a **mock server**.
-
-* Understand what it means to **implement the SMTP protocol** and be able to send e-mail messages, by working directly on top of the Socket API (i.e. you are not allowed to use a SMTP library).
-
-* **See how easy it is to send forged e-mails**, which appear to be sent by certain people but in reality are issued by malicious users.
-
-* **Design a simple object-oriented model** to implement the functional requirements described in the next paragraph.
 
 
-## Functional requirements
+## Description
 
-Your mission is to develop a client application that automatically plays pranks on a list of victims:
+PrankSender est un programme vous permettant d'envoyer des blagues par email en vous faisant passer pour quelqu'un d'autre.
 
-* The user should be able to **define a list of victims** (concretely, you should be able to create a file containing a list of e-mail addresses).
-* The user should be able to **define how many groups of victims should be formed** in a given campaign. In every group of victims, there should be 1 sender and at least 2 recipients (i.e. the minimum size for a group is 3).
-* The user should be able to **define a list of e-mail messages**. When a prank is played on a group of victims, then one of these messages should be selected. **The mail should be sent to all group recipients, from the address of the group sender**. In other words, the recipient victims should be lead to believe that the sender victim has sent them.
+Il est très simple d'utilisation et ne demande pas de connaissances particulières. 
 
-## Constraints
+## Configuration
 
-- The goal is for you to work at the wire protocol level (with the Socket API). Therefore, you CANNOT use a library that takes care of the protocol details. You have to work with the input and output streams.
-- The program must be configurable: the addresses, groups, messages CANNOT be hard-coded in the program and MUST be managed in config files.
+Toute la configuration se trouve dans le dossier config (client/resources/config). Elle est composée de 3 fichiers au format [JSON](https://en.wikipedia.org/wiki/JSON) : 
 
+- emails.json : Contient la liste des emails des victimes [emails], ainsi que le nombre de groupe de victimes à former [number_of_groups].
+- server.json : Configuration concernant le server SMTP à qui les blagues seront envoyées. Contient adresse du server [address] et le port de connexion [port].
+- pranks.json : Contient une liste de blagues qui vont être envoyées. Chaque blague est constituée  d'un sujet et d'un message.
 
-## Example
+Vous pouvez modifier les données de configuration, mais la structure doit restée la même, sinon le programme ne fonctionnera pas.
 
-Consider that your program generates a group G1. The group sender is Bob. The group recipients are Alice, Claire and Peter. When the prank is played on group G1, then your program should pick one of the fake messages. It should communicate with an SMTP server, so that Alice, Claire and Peter receive an e-mail, which appears to be sent by Bob.
+De plus, la présence de 3 emails minimum (taille des groupes minimum) et d'au moins une prank est requise.
 
-## Teams
+## Utilisation & tests
 
-You may work in teams of 2 students.
+Une fois les fichiers de configuration prêts, vous pouvez simplement exécuter la commande suivante  `java -jar prank-sender-1.0-SNAPSHOT-standalone.jar` depuis le dossier "Client/target". L'envoi des blagues sera alors fait automatiquement.
 
-## Deliverables
+Si vous souhaiter faire des tests avant d'envoyer de réelles blagues, nous avons inclus un serveur MockMock de test que vous pouvez utiliser. Il se trouve dans le dossier "Docker_Mock". Il s'agit d'un serveur tournant sur [Docker](https://www.docker.com/). Pour le lancer, vous aurez besoin d'une installation docker.
 
-You will deliver the results of your lab in a GitHub repository. You do not have to fork a specific repo, you can create one from scratch.
+#### Procédure pour effectuer un test :
 
-Your repository should contain both the source code of your Java project and your report. Your report should be a single `README.md` file, located at the root of your repository. The images should be placed in a `figures` directory.
+Lancer docker
 
-Your report MUST include the following sections:
+Allez dans le dossier "Docker_Mock" et lancer les deux commandes suivantes : `./build-image.sh` suivi de  `./run-container.sh`.
 
-* **A brief description of your project**: if people exploring GitHub find your repo, without a prior knowledge of the RES course, they should be able to understand what your repo is all about and whether they should look at it more closely.
+Configurer l'application pour utiliser l'adresse ip 127.0.0.1 et le port 25
 
-* **Instructions for setting up a mock SMTP server (with Docker - which you will learn all about in the next 2 weeks)**. The user who wants to experiment with your tool but does not really want to send pranks immediately should be able to use a mock SMTP server. For people who are not familiar with this concept, explain it to them in simple terms. Explain which mock server you have used and how you have set it up.
+Lancer l'application (`java -jar prank-sender-1.0-SNAPSHOT-standalone.jar`). Les emails seront envoyés au serveur MockMock
 
-* **Clear and simple instructions for configuring your tool and running a prank campaign**. If you do a good job, an external user should be able to clone your repo, edit a couple of files and send a batch of e-mails in less than 10 minutes.
+Connecter vous avec votre navigateur à l'adresse `http://localhost:8282/`. La liste des emails reçu par MockMock y est consultable.
 
-* **A description of your implementation**: document the key aspects of your code. It is probably a good idea to start with a class diagram. Decide which classes you want to show (focus on the important ones) and describe their responsibilities in text. It is also certainly a good idea to include examples of dialogues between your client and an SMTP server (maybe you also want to include some screenshots here).
-## References
+## Implémentation
 
-* [MockMock server](<https://github.com/tweakers/MockMock>) on GitHub. Pay attention to this [pull request](https://github.com/tweakers/MockMock/pull/8). While it has not been merged, it will give you the solution to compile the project on your machine.
-* The [mailtrap](<https://mailtrap.io/>) online service for testing SMTP
-* The [SMTP RFC](<https://tools.ietf.org/html/rfc5321#appendix-D>), and in particular the [example scenario](<https://tools.ietf.org/html/rfc5321#appendix-D>)
-* Testing SMTP with TLS: `openssl s_client -connect smtp.mailtrap.io:2525 -starttls smtp -crlf`
+![](C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\UML.png)
+
+L'application est constituée des classes suivantes :
+
+- ConfigReader s'occupe de lire les fichiers de configuration et de retourner les valeurs nécessaires.
+- GroupFactory constitue les groupes des victimes de manière aléatoires.
+- Group représente un groupe de victime  (un expéditeur et minimum deux destinataires)
+- PrankSender est responsable de créer des mails de prank pour les groupes, et demande leur envoi
+- Prank représente une blague (avec un sujet et un texte)
+- Mail représente un mail qui va être envoyé (expéditeur, destinataire, sujet, date, texte)
+- ClientSMTP envoi un mail en suivant le protocole SMTP.
+- STEP représente l'étape actuelle de l'envoi du mail
+
+## Exemple d'un dialogue Client-Serveur
+
+![image-20210508152313639](C:\Users\Alois\AppData\Roaming\Typora\typora-user-images\image-20210508152313639.png)
+
+En bleu les réponses du serveur, et en rouges celle du client.
 
