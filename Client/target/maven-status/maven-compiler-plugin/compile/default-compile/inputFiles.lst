@@ -1,7 +1,9 @@
-C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\Client\src\main\java\ch\heigvd\res\Prank.java
-C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\Client\src\main\java\ch\heigvd\res\ConfigReader.java
-C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\Client\src\main\java\ch\heigvd\res\Group.java
-C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\Client\src\main\java\ch\heigvd\res\GroupMailer.java
-C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\Client\src\main\java\ch\heigvd\res\GroupFactory.java
-C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\Client\src\main\java\ch\heigvd\res\ClientSMTP.java
-C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\Client\src\main\java\ch\heigvd\res\Mail.java
+C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\client\src\main\java\ch\heigvd\res\Main.java
+C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\client\src\main\java\ch\heigvd\res\config\ConfigReadException.java
+C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\client\src\main\java\ch\heigvd\res\Prank.java
+C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\client\src\main\java\ch\heigvd\res\config\ConfigReader.java
+C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\client\src\main\java\ch\heigvd\res\PrankSender.java
+C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\client\src\main\java\ch\heigvd\res\Group.java
+C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\client\src\main\java\ch\heigvd\res\GroupFactory.java
+C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\client\src\main\java\ch\heigvd\res\ClientSMTP.java
+C:\Users\Alois\Documents\Cours\semestre_6\RES\labos\Labo04\ClientSMTP\Teaching-HEIGVD-RES-2021-Labo-SMTP\client\src\main\java\ch\heigvd\res\Mail.java
